@@ -1,0 +1,29 @@
+web:
+  image: 'htmlgraphic/apache:envoyer'
+  volumes:
+   - "/Volumes/Case/SITES/docker:/data"
+   #- "/c/Users/southpark/docker:/data"
+  links:
+    - "db:mysql"
+  ports:
+    - "80:80"
+    - "443:443"
+  environment:
+    - NODE_ENVIRONMENT=dev
+  env_file:
+    - .env
+db:
+  image: 'mysql:5.7'
+  volumes_from:
+    - db-data2
+  ports:
+    - "3306:3306"
+  environment:
+    - MYSQL_DATABASE=htmlgraphic
+    - MYSQL_PASSWORD=new_password
+    - MYSQL_ROOT_PASSWORD=new_passwordac
+    - MYSQL_USER=admin
+db-data2:
+  image: 'busybox:latest'
+  volumes:
+    - "/var/lib/mysql"

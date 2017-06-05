@@ -1,0 +1,45 @@
+hg-web:
+  autoredeploy: true
+  deployment_strategy: high_availability
+  environment:
+    - NODE_ENVIRONMENT=production
+    - SASL_PASS=
+    - SASL_USER=
+    - SMTP_HOST=
+  image: 'htmlgraphic/apache:envoyer'
+  links:
+    - 'mysql.DB:mysql'
+  ports:
+    - '80:80'
+    - '443:443'
+  restart: always
+  sequential_deployment: true
+  tags:
+    - testing
+  volumes_from:
+    - hg-web-data
+hg-web-data:
+  image: 'busybox:latest'
+  tags:
+    - testing
+  volumes:
+    - /data
+hg-db:
+  environment:
+    - MYSQL_DATABASE=htmlgraphic
+    - MYSQL_PASSWORD=new_password
+    - MYSQL_ROOT_PASSWORD=new_passwordac
+    - MYSQL_USER=admin
+  expose:
+    - '3306'
+  image: 'mysql:5.7'
+  tags:
+    - testing
+  volumes_from:
+    - hg-db-data2
+hg-db-data2:
+  image: 'busybox:latest'
+  tags:
+    - testing
+  volumes:
+    - /var/lib/mysql

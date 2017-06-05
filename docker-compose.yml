@@ -1,0 +1,26 @@
+hg-web:
+  image: 'htmlgraphic/apache:envoyer'
+  ports:
+    - "80:80"
+    - "443:443"
+  environment:
+    - NODE_ENVIRONMENT=production
+  env_file:
+    - .env
+  links:
+    - "hg-db:mysql"
+hg-db:
+  image: 'mysql:5.7'
+  environment:
+    - MYSQL_DATABASE=htmlgraphic
+    - MYSQL_PASSWORD=new_password
+    - MYSQL_ROOT_PASSWORD=new_passwordac
+    - MYSQL_USER=admin
+  expose:
+    - "3306"
+  volumes_from:
+    - db-data2
+db-data2:
+  image: 'busybox:latest'
+  volumes:
+    - "/var/lib/mysql"
